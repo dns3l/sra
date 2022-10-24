@@ -61,14 +61,11 @@ export SRA_DATABASE=${SRA_DATABASE:-"sra"}
 export SRA_DB_USER=${SRA_DB_USER:-"sra"}
 export SRA_DB_PASS=${SRA_DB_PASS:-$(random_token)}
 export SRA_DB_HOST=${SRA_DB_HOST:-"db"}
-export MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD:-$(random_token)}
 
 production=false
 if [[ ${ENVIRONMENT,,} == "production" ]]; then
   production=true
 fi
-
-# . /mo
 
 # Avoid destroying bootstrapping by simple start/stop
 if [[ ! -e ${STEPPATH}/.bootstrapped ]]; then
@@ -81,7 +78,7 @@ fi
 ### ACME RA DB bootstrapping...
 ###
 
-if [ "${production}" == "false" ]; then
+if [ "${production}" == "false" -a -n "${MARIADB_ROOT_PASSWORD}"]; then
   echo "Bootstrapping ACME RA Database..."
   set +e
   /dckrz -wait tcp://${SRA_DB_HOST}:3306 -timeout ${SERVICE_TIMEOUT} -- \
