@@ -78,7 +78,7 @@ fi
 ### ACME RA DB bootstrapping...
 ###
 
-if [ "${production}" == "false" -a -n "${MARIADB_ROOT_PASSWORD}"]; then
+if [[ "${production}" == "false" && -n "${MARIADB_ROOT_PASSWORD}" ]]; then
   echo "Bootstrapping ACME RA Database..."
   set +e
   /dckrz -wait tcp://${SRA_DB_HOST}:3306 -timeout ${SERVICE_TIMEOUT} -- \
