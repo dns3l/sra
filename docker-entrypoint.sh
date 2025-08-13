@@ -63,6 +63,8 @@ export SRA_DB_USER=${SRA_DB_USER:-"sra"}
 export SRA_DB_PASS=${SRA_DB_PASS:-$(random_token)}
 export SRA_DB_HOST=${SRA_DB_HOST:-"db"}
 
+export MARIADB_ARGS=${MARIADB_ARGS:-""}
+
 production=false
 if [[ ${ENVIRONMENT,,} == "production" ]]; then
   production=true
@@ -83,12 +85,12 @@ if [[ "${production}" == "false" && -n "${MARIADB_ROOT_PASSWORD}" ]]; then
   echo "Bootstrapping ACME RA Database..."
   set +e
   /dckrz -wait tcp://${SRA_DB_HOST}:3306 -timeout ${SERVICE_TIMEOUT} -- \
-    echo "quit" | mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" -h"${SRA_DB_HOST}" -D"${SRA_DATABASE}"
+    echo "quit" | mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" -h"${SRA_DB_HOST}" -D"${SRA_DATABASE}" ${MARIADB_ARGS}
   if [ "$?" != "0" ]; then # create DB
     set -e
     echo "Create ${SRA_DATABASE}..."
     /dckrz -wait tcp://${SRA_DB_HOST}:3306 -timeout ${SERVICE_TIMEOUT} -- \
-      cat <<EOSQL | mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" -h"${SRA_DB_HOST}"
+      cat <<EOSQL | mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" -h"${SRA_DB_HOST}" ${MARIADB_ARGS}
 CREATE DATABASE IF NOT EXISTS ${SRA_DATABASE};
 CREATE USER IF NOT EXISTS ${SRA_DB_USER}@'%' IDENTIFIED BY '${SRA_DB_PASS}';
 GRANT ALL ON ${SRA_DATABASE}.* TO ${SRA_DB_USER}@'%';
@@ -98,7 +100,7 @@ EOSQL
     set -e
     echo "Change password ${SRA_DB_PASS}..."
     /dckrz -wait tcp://${SRA_DB_HOST}:3306 -timeout ${SERVICE_TIMEOUT} -- \
-      cat <<EOSQL | mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" -h"${SRA_DB_HOST}"
+      cat <<EOSQL | mariadb -uroot -p"${MARIADB_ROOT_PASSWORD}" -h"${SRA_DB_HOST}" ${MARIADB_ARGS}
 ALTER USER IF EXISTS ${SRA_DB_USER}@'%' IDENTIFIED BY '${SRA_DB_PASS}';
 FLUSH PRIVILEGES;
 EOSQL
