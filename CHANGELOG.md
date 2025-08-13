@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/dns3l/sra/compare/v1.0.4...v1.0.5) (2025-08-13)
+
+
+### Bug Fixes
+
+* allow extra mariadb args ([#28](https://github.com/dns3l/sra/issues/28)) ([0a3e13f](https://github.com/dns3l/sra/commit/0a3e13f8ccb81e6887313ebeb677f108414e89c6))
+
 ## [1.0.4](https://github.com/dns3l/sra/compare/v1.0.3...v1.0.4) (2025-08-13)
 
 
