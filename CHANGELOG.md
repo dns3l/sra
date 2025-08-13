@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/dns3l/sra/compare/v1.0.3...v1.0.4) (2025-08-13)
+
+
+### Bug Fixes
+
+* bump alpine, dockerize ([#27](https://github.com/dns3l/sra/issues/27)) ([560bed1](https://github.com/dns3l/sra/commit/560bed1b56925ed5ec8193550cf18014993cf047))
+
 ## [1.0.3](https://github.com/dns3l/sra/compare/v1.0.2...v1.0.3) (2023-02-22)
 
 
