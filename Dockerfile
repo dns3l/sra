@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.22
 
 LABEL org.opencontainers.image.title="dns3l smallstep RA"
 LABEL org.opencontainers.image.description="A smallstep ACME RA for DNS3L"
@@ -56,8 +56,8 @@ RUN curl -fsSL https://github.com/smallstep/cli/releases/download/v${STEP_VERSIO
  
 # Install dockerize
 #
-ENV DCKRZ_VERSION="0.17.0"
-RUN _arch=${_arch/amd64/x86_64} && curl -fsSL https://github.com/powerman/dockerize/releases/download/v$DCKRZ_VERSION/dockerize-${_os}-${_arch}${_variant} > /dckrz && \
+ENV DCKRZ_VERSION="0.23.1"
+RUN curl -fsSL https://github.com/powerman/dockerize/releases/download/v$DCKRZ_VERSION/dockerize-v${DCKRZ_VERSION}-${_os}-${_arch}${_variant} > /dckrz && \
     chmod a+x /dckrz
 
 COPY ca.json $STEPPATH/ca.json.tmpl
